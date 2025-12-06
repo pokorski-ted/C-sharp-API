@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyFirstApi.Models;
-
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MyFirstApi.Controllers
 
@@ -15,7 +15,7 @@ namespace MyFirstApi.Controllers
 
     {
 
-        private static readonly List<Product> _products = new()
+        private static readonly List<Product> _product = new()
         {
             new Product {Id = 1, Name = "Apple"},
             new Product {Id = 2, Name = "Banana"},
@@ -28,16 +28,19 @@ namespace MyFirstApi.Controllers
 
         {
 
-            return _products;
+            return _product;
 
         }
 
         [HttpGet("{id}")]
         public ActionResult<Product> GetById(int id)
         {
-            var product = _products.FirstOrDefault(p => p.Id == id);
+            if (id <= 0)
+                return BadRequest("Id must be a positive integer.");
+
+            var product = _product.FirstOrDefault(p => p.Id == id);
             if (product == null)
-                return NotFound();
+                return NotFound($"No product found with Id = {id}.");
 
             return product;
         }
@@ -45,22 +48,47 @@ namespace MyFirstApi.Controllers
         [HttpPost]
         public ActionResult<Product> Post([FromBody] Product request)
         {
-            request.Id = _products.Max(p => p.Id) + 1;  // auto ID
-            _products.Add(request);
-            return CreatedAtAction(nameof(GetById), new { id = request.Id }, request);
+            try
+            {
+                // Safer ID calculation (handles empty list)
+                var nextId = _product.Any()
+                    ? _product.Max(p => p.Id) + 1
+                    : 1;
+
+                request.Id = nextId;
+                _product.Add(request);
+
+                return CreatedAtAction(nameof(GetById), new { id = request.Id }, request);
+            }
+            catch
+            {
+                // In a real app you'd log the exception
+                return StatusCode(500, "An error occurred while creating the product.");
+            }
 
         }
 
         [HttpPut("{id}")]
         public ActionResult<Product> Put(int id, [FromBody] Product request)
         {
-            var product = _products.FirstOrDefault(p => p.Id == id);
-            if (product == null)
-                return NotFound();
+            if (id <= 0)
+                return BadRequest("Id must be a positive integer.");
 
-            product.Name = request.Name;
+            // Validation for 'request' is still automatic due to [ApiController] + data annotations
+            try
+            {
+                var product = _product.FirstOrDefault(p => p.Id == id);
+                if (product == null)
+                    return NotFound($"No product found with Id = {id}.");
 
-            return product;
+                product.Name = request.Name;
+
+                return product;
+            }
+            catch
+            {
+                return StatusCode(500, $"An error occurred while updating product with Id = {id}.");
+            }
         }
 
         [HttpDelete("{id}")]
@@ -68,14 +96,15 @@ namespace MyFirstApi.Controllers
         public ActionResult<Product> Delete(int id)
 
         {
-            var product = _products.FirstOrDefault(p => p.Id == id);
+            if (id <= 0)
+                return BadRequest("Id must be a positive integer.");
+
+            var product = _product.FirstOrDefault(p => p.Id == id);
             if (product == null)
-                return NotFound();
+                return NotFound($"No product found with Id = {id}.");
 
-            _products.Remove(product);
-
+            _product.Remove(product);
             return NoContent();
-
         }
     }
 
