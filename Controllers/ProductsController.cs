@@ -104,7 +104,7 @@ namespace MyFirstApi.Controllers
                 return NotFound($"No product found with Id = {id}.");
 
             _product.Remove(product);
-            return NoContent();
+            return StatusCode(200, $"Successfully deleted product with Id = {id}.");
         }
     }
 
