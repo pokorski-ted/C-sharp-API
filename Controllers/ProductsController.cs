@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MyFirstApi.Models;
 
 using System.Collections.Generic;
 
@@ -14,17 +15,16 @@ namespace MyFirstApi.Controllers
 
     {
 
-        private static readonly List<string> _products = new()
+        private static readonly List<Product> _products = new()
         {
-            "Apple",
-            "Banana",
-            "Orange"
+            new Product {Id = 1, Name = "Apple"},
+            new Product {Id = 2, Name = "Banana"},
+            new Product {Id = 3, Name = "Orange"}
         };
-
 
         [HttpGet]
 
-        public ActionResult<List<string>> Get()
+        public ActionResult<List<Product>> Get()
 
         {
 
@@ -32,35 +32,49 @@ namespace MyFirstApi.Controllers
 
         }
 
-        [HttpPost]
-        public ActionResult<string> Post([FromBody] string newProduct)
-
+        [HttpGet("{id}")]
+        public ActionResult<Product> GetById(int id)
         {
+            var product = _products.FirstOrDefault(p => p.Id == id);
+            if (product == null)
+                return NotFound();
 
-            _products.Add(newProduct);
-            return $"Added: {newProduct} at index {_products.Count - 1}";
+            return product;
+        }
+
+        [HttpPost]
+        public ActionResult<Product> Post([FromBody] Product request)
+        {
+            request.Id = _products.Max(p => p.Id) + 1;  // auto ID
+            _products.Add(request);
+            return CreatedAtAction(nameof(GetById), new { id = request.Id }, request);
 
         }
 
         [HttpPut("{id}")]
-        public ActionResult<string> Put(int id, [FromBody] string updatedProduct)
+        public ActionResult<Product> Put(int id, [FromBody] Product request)
         {
-            if (id < 0 || id >= _products.Count)
-            {
-                return NotFound($"Product with ID {id} not found.");
-            }
+            var product = _products.FirstOrDefault(p => p.Id == id);
+            if (product == null)
+                return NotFound();
 
-            _products[id] = updatedProduct;
-            return $"Updated product with ID {id} to: {updatedProduct}";
+            product.Name = request.Name;
+
+            return product;
         }
 
         [HttpDelete("{id}")]
 
-        public ActionResult<string> Delete(int id)
+        public ActionResult<Product> Delete(int id)
 
         {
-            _products.RemoveAt(id);
-            return $"Deleted product with ID: {id}";
+            var product = _products.FirstOrDefault(p => p.Id == id);
+            if (product == null)
+                return NotFound();
+
+            _products.Remove(product);
+
+            return NoContent();
 
         }
     }
