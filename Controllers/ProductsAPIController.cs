@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using MyFirstApi.Data;
 using MyFirstApi.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace MyFirstApi.Controllers
 
@@ -18,12 +20,6 @@ namespace MyFirstApi.Controllers
 
     {
 
-        private static readonly List<Product> _product = new()
-        {
-            new Product {Id = 1, Name = "Apple"},
-            new Product {Id = 2, Name = "Banana"},
-            new Product {Id = 3, Name = "Orange"}
-        };
 
         [HttpGet]
 
@@ -31,7 +27,7 @@ namespace MyFirstApi.Controllers
 
         {
 
-            return _product;
+            return ProductStore.Products;
 
         }
 
@@ -41,7 +37,7 @@ namespace MyFirstApi.Controllers
             if (id <= 0)
                 return BadRequest("Id must be a positive integer.");
 
-            var product = _product.FirstOrDefault(p => p.Id == id);
+            var product = ProductStore.Products.FirstOrDefault(p => p.Id == id);
             if (product == null)
                 return NotFound($"No product found with Id = {id}.");
 
@@ -54,12 +50,12 @@ namespace MyFirstApi.Controllers
             try
             {
                 // Safer ID calculation (handles empty list)
-                var nextId = _product.Any()
-                    ? _product.Max(p => p.Id) + 1
+                var nextId = ProductStore.Products.Any()
+                    ? ProductStore.Products.Max(p => p.Id) + 1
                     : 1;
 
                 request.Id = nextId;
-                _product.Add(request);
+                ProductStore.Products.Add(request);
 
                 return CreatedAtAction(nameof(GetById), new { id = request.Id }, request);
             }
@@ -80,7 +76,7 @@ namespace MyFirstApi.Controllers
             // Validation for 'request' is still automatic due to [ApiController] + data annotations
             try
             {
-                var product = _product.FirstOrDefault(p => p.Id == id);
+                var product = ProductStore.Products.FirstOrDefault(p => p.Id == id);
                 if (product == null)
                     return NotFound($"No product found with Id = {id}.");
 
@@ -102,11 +98,11 @@ namespace MyFirstApi.Controllers
             if (id <= 0)
                 return BadRequest("Id must be a positive integer.");
 
-            var product = _product.FirstOrDefault(p => p.Id == id);
+            var product = ProductStore.Products.FirstOrDefault(p => p.Id == id);
             if (product == null)
                 return NotFound($"No product found with Id = {id}.");
 
-            _product.Remove(product);
+            ProductStore.Products.Remove(product);
             return StatusCode(200, $"Successfully deleted product with Id = {id}.");
         }
     }
