@@ -9,9 +9,12 @@ namespace MyFirstApi.Controllers
 
     [ApiController]
 
-    [Route("api/[controller]")]
+    //Ignore the controller name.
+    //[Route("api/[controller]")]
+    //ALWAYS use /api/products as the route
+    [Route("api/products")]
 
-    public class ProductsAPIController : ControllerBase
+    public class ProductsApiController : ControllerBase
 
     {
 

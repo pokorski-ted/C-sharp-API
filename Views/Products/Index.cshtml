@@ -1,10 +1,11 @@
 @{
-    ViewData["Title"] = "Products UI";
+    ViewData["Title"] = "Products UI - From API";
 }
 
-<h1>Products UI (Calls API)</h1>
+<h1>Products UI (Calls /api/products)</h1>
 
 <button onclick="loadProducts()">Load Products</button>
+<br /><br />
 
 <table border="1" cellpadding="5" cellspacing="0">
     <thead>
@@ -21,6 +22,28 @@
 <h2>Add Product (POST)</h2>
 <input type="text" id="newName" placeholder="Product name" />
 <button onclick="addProduct()">Add</button>
+
+<hr />
+
+<h2>Update Product (PUT)</h2>
+<label>
+    Id:
+    <input type="number" id="updateId" />
+</label>
+<label>
+    New Name:
+    <input type="text" id="updateName" />
+</label>
+<button onclick="updateProduct()">Update</button>
+
+<hr />
+
+<h2>Delete Product (DELETE)</h2>
+<label>
+    Id:
+    <input type="number" id="deleteId" />
+</label>
+<button onclick="deleteProduct()">Delete</button>
 
 <hr />
 
@@ -59,5 +82,46 @@
         }
 
         loadProducts();
+    }
+
+    // NEW — updateProduct (PUT)
+    async function updateProduct() {
+        const id = document.getElementById('updateId').value;
+        const name = document.getElementById('updateName').value;
+
+        const res = await fetch(`/api/products/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name })
+        });
+
+        if (res.ok) {
+            document.getElementById('status').textContent = 'Product updated!';
+        } else {
+            const err = await res.json();
+            document.getElementById('status').textContent = JSON.stringify(err, null, 2);
+        }
+
+        loadProducts();
+    }
+
+    // NEW — deleteProduct (DELETE)
+    async function deleteProduct() {
+        const id = document.getElementById('deleteId').value;
+
+        const res = await fetch(`/api/products/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (res.ok || res.status === 204) {
+            document.getElementById('status').textContent = 'Product deleted!';
+        } else {
+            const err = await res.json();
+            document.getElementById('status').textContent = JSON.stringify(err, null, 2);
+        }
+
+        loadProducts();
+
+        document.getElementById('status').textContent = 'Loaded products.';
     }
 </script>
