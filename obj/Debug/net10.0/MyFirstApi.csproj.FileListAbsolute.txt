@@ -32,3 +32,5 @@ C:\Users\pokor\OneDrive\Documents\dotNetProjects\MyFirstApi\obj\Debug\net10.0\My
 C:\Users\pokor\OneDrive\Documents\dotNetProjects\MyFirstApi\obj\Debug\net10.0\MyFirstApi.genruntimeconfig.cache
 C:\Users\pokor\OneDrive\Documents\dotNetProjects\MyFirstApi\obj\Debug\net10.0\ref\MyFirstApi.dll
 C:\Users\pokor\OneDrive\Documents\dotNetProjects\MyFirstApi\obj\Debug\net10.0\MyFirstApi.sourcelink.json
+C:\Users\pokor\OneDrive\Documents\dotNetProjects\MyFirstApi\obj\Debug\net10.0\MyFirstApi.RazorAssemblyInfo.cache
+C:\Users\pokor\OneDrive\Documents\dotNetProjects\MyFirstApi\obj\Debug\net10.0\MyFirstApi.RazorAssemblyInfo.cs

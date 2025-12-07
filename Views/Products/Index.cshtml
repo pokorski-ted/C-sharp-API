@@ -1,0 +1,63 @@
+@{
+    ViewData["Title"] = "Products UI";
+}
+
+<h1>Products UI (Calls API)</h1>
+
+<button onclick="loadProducts()">Load Products</button>
+
+<table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody id="products-body"></tbody>
+</table>
+
+<hr />
+
+<h2>Add Product (POST)</h2>
+<input type="text" id="newName" placeholder="Product name" />
+<button onclick="addProduct()">Add</button>
+
+<hr />
+
+<h2>Status</h2>
+<pre id="status"></pre>
+
+<script>
+    async function loadProducts() {
+        const res = await fetch('/api/products');
+        const data = await res.json();
+
+        const tbody = document.getElementById('products-body');
+        tbody.innerHTML = '';
+
+        data.forEach(p => {
+            tbody.innerHTML += `<tr><td>${p.id}</td><td>${p.name}</td></tr>`;
+        });
+
+        document.getElementById('status').textContent = 'Loaded products.';
+    }
+
+    async function addProduct() {
+        const name = document.getElementById('newName').value;
+
+        const res = await fetch('/api/products', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name })
+        });
+
+        if (res.ok) {
+            document.getElementById('status').textContent = 'Product added!';
+        } else {
+            const err = await res.json();
+            document.getElementById('status').textContent = JSON.stringify(err, null, 2);
+        }
+
+        loadProducts();
+    }
+</script>

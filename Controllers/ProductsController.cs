@@ -11,7 +11,7 @@ namespace MyFirstApi.Controllers
 
     [Route("api/[controller]")]
 
-    public class ProductsController : ControllerBase
+    public class ProductsAPIController : ControllerBase
 
     {
 
