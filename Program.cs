@@ -1,8 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using MyFirstApi.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+
+// Add EF Core SQLite
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=products.db"));
 
 var app = builder.Build();
 
