@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyFirstApi.Data;
+using MyFirstApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddControllersWithViews();
 // Add EF Core SQLite
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=products.db"));
+
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 

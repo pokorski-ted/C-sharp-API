@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using MyFirstApi.Services;
 
 namespace MyFirstApi.Controllers
 
@@ -21,32 +22,24 @@ namespace MyFirstApi.Controllers
 
     {
 
-        private readonly AppDbContext _db;
+        private readonly IProductService _products;
 
-        public ProductsApiController(AppDbContext db)
+        public ProductsApiController(IProductService products)
         {
-            _db = db;
+            _products = products;
         }
 
-
         [HttpGet]
-
         public async Task<ActionResult<List<Product>>> Get()
-
         {
-
-            var products = await _db.Products.AsNoTracking().ToListAsync();
-            return products;
-
+            var items = await _products.GetAllAsync();
+            return items;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetById(int id)
         {
-            if (id <= 0)
-                return BadRequest("Id must be a positive integer.");
-
-            var product = await _db.Products.FindAsync(id);
+            var product = await _products.GetByIdAsync(id);
             if (product == null)
                 return NotFound($"No product found with Id = {id}.");
 
@@ -56,59 +49,41 @@ namespace MyFirstApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> Post([FromBody] Product request)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             try
             {
-                _db.Products.Add(request);
-                await _db.SaveChangesAsync();
-
-                return CreatedAtAction(nameof(GetById), new { id = request.Id }, request);
+                var created = await _products.CreateAsync(request);
+                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
             }
             catch
             {
                 return StatusCode(500, "An error occurred while creating the product.");
             }
-
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Product>> Put(int id, [FromBody] Product request)
         {
-            if (id <= 0)
-                return BadRequest("Id must be a positive integer.");
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            // Validation for 'request' is still automatic due to [ApiController] + data annotations
-            try
-            {
-                var product = await _db.Products.FindAsync(id);
-                if (product == null)
-                    return NotFound($"No product found with Id = {id}.");
+            var updated = await _products.UpdateAsync(id, request);
+            if (updated == null)
+                return NotFound($"No product found with Id = {id}.");
 
-                product.Name = request.Name;
-
-                return product;
-            }
-            catch
-            {
-                return StatusCode(500, $"An error occurred while updating product with Id = {id}.");
-            }
+            return updated;
         }
 
         [HttpDelete("{id}")]
-
-        public async Task<ActionResult<Product>> Delete(int id)
-
+        public async Task<ActionResult> Delete(int id)
         {
-            if (id <= 0)
-                return BadRequest("Id must be a positive integer.");
-
-            var product = await _db.Products.FindAsync(id);
-            if (product == null)
+            var success = await _products.DeleteAsync(id);
+            if (!success)
                 return NotFound($"No product found with Id = {id}.");
 
-            _db.Products.Remove(product);
-            await _db.SaveChangesAsync();
-
-            return StatusCode(200, $"Successfully deleted product with Id = {id}.");
+            return Ok($"Successfully deleted product with Id = {id}.");
         }
     }
 

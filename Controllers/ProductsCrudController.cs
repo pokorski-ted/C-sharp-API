@@ -1,26 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
-using MyFirstApi.Data;
 using MyFirstApi.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using MyFirstApi.Services;
 
 namespace MyFirstApi.Controllers
 {
     public class ProductsCrudController : Controller
     {
+        private readonly IProductService _products;
 
-        private readonly AppDbContext _db;
-
-        public ProductsCrudController(AppDbContext db)
+        public ProductsCrudController(IProductService products)
         {
-            _db = db;
+            _products = products;
         }
 
         // GET: /ProductsCrud
         public async Task<IActionResult> Index()
         {
-            var products = await _db.Products.AsNoTracking().ToListAsync();
-            return View(products);
+            var items = await _products.GetAllAsync();
+            return View(items);
         }
 
         // GET: /ProductsCrud/Create
@@ -37,16 +34,14 @@ namespace MyFirstApi.Controllers
             if (!ModelState.IsValid)
                 return View(product);
 
-            _db.Products.Add(product);
-            await _db.SaveChangesAsync();
-
+            await _products.CreateAsync(product);
             return RedirectToAction(nameof(Index));
         }
 
         // GET: /ProductsCrud/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var product = await _db.Products.FindAsync(id);
+            var product = await _products.GetByIdAsync(id);
             if (product == null)
                 return NotFound();
 
@@ -61,20 +56,17 @@ namespace MyFirstApi.Controllers
             if (!ModelState.IsValid)
                 return View(updated);
 
-            var product = await _db.Products.FindAsync(id);
-            if (product == null)
+            var result = await _products.UpdateAsync(id, updated);
+            if (result == null)
                 return NotFound();
 
-            product.Name = updated.Name;
-
-            await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         // GET: /ProductsCrud/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _db.Products.FindAsync(id);
+            var product = await _products.GetByIdAsync(id);
             if (product == null)
                 return NotFound();
 
@@ -86,12 +78,9 @@ namespace MyFirstApi.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _db.Products.FindAsync(id);
-            if (product == null)
+            var success = await _products.DeleteAsync(id);
+            if (!success)
                 return NotFound();
-
-            _db.Products.Remove(product);
-            await _db.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
