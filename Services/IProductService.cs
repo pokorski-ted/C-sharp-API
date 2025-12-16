@@ -1,6 +1,6 @@
-using MyFirstApi.Models;
+using CRUD_API.Models;
 
-namespace MyFirstApi.Services
+namespace CRUD_API.Services
 {
     public interface IProductService
     {

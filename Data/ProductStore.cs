@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using MyFirstApi.Models;
+using CRUD_API.Models;
 
-namespace MyFirstApi.Data
+namespace CRUD_API.Data
 {
     public static class ProductStore
     {

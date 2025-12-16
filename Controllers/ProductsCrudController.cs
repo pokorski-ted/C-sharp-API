@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using MyFirstApi.Models;
-using MyFirstApi.Services;
+using CRUD_API.Models;
+using CRUD_API.Services;
 
-namespace MyFirstApi.Controllers
+namespace CRUD_API.Controllers
 {
     public class ProductsCrudController : Controller
     {

@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
-using MyFirstApi.Data;
-using MyFirstApi.Models;
+using CRUD_API.Data;
+using CRUD_API.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
-using MyFirstApi.Services;
+using CRUD_API.Services;
 
-namespace MyFirstApi.Controllers
+namespace CRUD_API.Controllers
 
 {
 

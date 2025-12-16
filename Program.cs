@@ -1,6 +1,6 @@
+using CRUD_API.Services;
 using Microsoft.EntityFrameworkCore;
-using MyFirstApi.Data;
-using MyFirstApi.Services;
+using CRUD_API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace MyFirstApi.Controllers
+namespace CRUD_API.Controllers
 {
     public class ProductsController : Controller
     {

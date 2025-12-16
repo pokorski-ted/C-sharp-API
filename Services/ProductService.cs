@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using MyFirstApi.Data;
-using MyFirstApi.Models;
+using CRUD_API.Data;
+using CRUD_API.Models;
+using Microsoft.Extensions.Logging;
+using CRUD_API.Services;
 
-namespace MyFirstApi.Services
+namespace CRUD_API.Services
 {
     public class ProductService : IProductService
     {

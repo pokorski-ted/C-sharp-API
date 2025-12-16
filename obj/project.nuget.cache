@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "afYtv/M4+nA=",
+  "dgSpecHash": "xkUoI0/uRSI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\pokor\\OneDrive\\Documents\\dotNetProjects\\MyFirstApi\\MyFirstApi.csproj",
+  "projectFilePath": "C:\\Users\\pokor\\OneDrive\\Documents\\dotNetProjects\\CRUD_API\\CRUD_API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pokor\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\pokor\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.0\\microsoft.aspnetcore.openapi.10.0.0.nupkg.sha512",
