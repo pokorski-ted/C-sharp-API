@@ -1,6 +1,7 @@
 using CRUD_API.Services;
 using Microsoft.EntityFrameworkCore;
 using CRUD_API.Data;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IProductService, ProductService>();
 
+// Configure CORS to allow requests from React development server
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactDev", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,6 +34,9 @@ var app = builder.Build();
 // Remove HTTPS redirection so you can test with http
 
 // app.UseHttpsRedirection();
+
+app.UseCors("ReactDev");
+
 
 app.UseAuthorization();
 

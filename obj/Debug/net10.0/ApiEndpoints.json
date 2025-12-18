@@ -1,6 +1,6 @@
 [
   {
-    "ContainingType": "MyFirstApi.Controllers.ProductsApiController",
+    "ContainingType": "CRUD_API.Controllers.ProductsApiController",
     "Method": "Get",
     "RelativePath": "api/products",
     "HttpMethod": "GET",
@@ -9,7 +9,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.List\u00601[[MyFirstApi.Models.Product, MyFirstApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.List\u00601[[CRUD_API.Models.Product, CRUD_API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -20,7 +20,7 @@
     ]
   },
   {
-    "ContainingType": "MyFirstApi.Controllers.ProductsApiController",
+    "ContainingType": "CRUD_API.Controllers.ProductsApiController",
     "Method": "Post",
     "RelativePath": "api/products",
     "HttpMethod": "POST",
@@ -29,13 +29,13 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "MyFirstApi.Models.Product",
+        "Type": "CRUD_API.Models.Product",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "MyFirstApi.Models.Product",
+        "Type": "CRUD_API.Models.Product",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -46,7 +46,7 @@
     ]
   },
   {
-    "ContainingType": "MyFirstApi.Controllers.ProductsApiController",
+    "ContainingType": "CRUD_API.Controllers.ProductsApiController",
     "Method": "GetById",
     "RelativePath": "api/products/{id}",
     "HttpMethod": "GET",
@@ -61,7 +61,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "MyFirstApi.Models.Product",
+        "Type": "CRUD_API.Models.Product",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -72,7 +72,7 @@
     ]
   },
   {
-    "ContainingType": "MyFirstApi.Controllers.ProductsApiController",
+    "ContainingType": "CRUD_API.Controllers.ProductsApiController",
     "Method": "Put",
     "RelativePath": "api/products/{id}",
     "HttpMethod": "PUT",
@@ -86,13 +86,13 @@
       },
       {
         "Name": "request",
-        "Type": "MyFirstApi.Models.Product",
+        "Type": "CRUD_API.Models.Product",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "MyFirstApi.Models.Product",
+        "Type": "CRUD_API.Models.Product",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -103,7 +103,7 @@
     ]
   },
   {
-    "ContainingType": "MyFirstApi.Controllers.ProductsApiController",
+    "ContainingType": "CRUD_API.Controllers.ProductsApiController",
     "Method": "Delete",
     "RelativePath": "api/products/{id}",
     "HttpMethod": "DELETE",
